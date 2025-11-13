@@ -1,4 +1,3 @@
-
 handValues = {"High Card" :0, 
               "Pair" : 0, 
               "Two Pair" : 0, 
@@ -8,10 +7,10 @@ handValues = {"High Card" :0,
               "Full House" : 0, 
               "Four-Of-A-Kind" : 0, 
               "Straight Flush:" : 0}
+              
 hands = []
-for key, value, in handValues:
-    
-    
+for key, value in handValues:
+    hands.append(key)
 
 iterations = [1,10,100,1000,10000,100000,1000000,10000000]
 probabilities = {"High Card" : 0.174,
@@ -24,7 +23,6 @@ probabilities = {"High Card" : 0.174,
                 "Four-Of-A-Kind" : .0017, 
                 "Straight Flush:" : 0.00031}
 
-
 def convert(num):
     numList = ['ace', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'jack', 'queen', 'king']
     suitList = ["diamonds", "clubs", "hearts", "spades"]
@@ -35,9 +33,17 @@ def convert(num):
     print(output)
 
 # USER INPUT===========================================
-selectHand = menu(bind = handMenu,  choices = handList)
-selectIterations = menu(bind = iterations, choices = iterationsList)
-start = button(bind = startSim, text = "Start Simulation")
+iterations =0
+wt = wtext("Select Hand: ")
+wt.text = "Select Hand: "
+selectHand = menu(bind = handMenu,  wtext = "Select a Hand", choices = hands)
+
+wt = wtext("\nSelect Iterations: ")
+wt.text = "\nSelect Iterations: "
+selectIterations = menu(bind = iterations,wtext = "Select Number of Iterations", choices = iterations)
+
+wt = wtext("\nEdge Exclusion: ")
+wt.text = "\nEdge Exclusion: "
 
 
 
@@ -106,12 +112,31 @@ def isFlush(current):
             return False
 
 def isStraight(current):
+    current.sort()
+    if((current[1] == current[0] + 1) and (current[2] == current[1] + 1) and (current[3] == current[2] + 1) and (current[4] == current[3] + 1)):
+        print(True) 
+    else if((current[2] == current[1] + 1) and (current[3] == current[2] + 1) and (current[4] == current[3] + 1) and (current[5] == current[4] + 1)):
+        print(True) 
+    else if((current[3] == current[2] + 1) and (current[4] == current[3] + 1) and (current[5] == current[4] + 1) and (current[6] == current[5] + 1)):
+        print(True)
+    else:
+        print(False)
 
 def firstCommon(current):
-    numCount = [0,0,0,0,0,0,0,0,0,0,0,0,0]
-    for i in range(0, 6, 1):
-        numCount[i] += 1
-    for i in range(0, 6, 1):
+    current.sort()
+    maxCount = 0
+    count = 1
+    num = 0
+    for i in range(0,5,1):
+        if(current[i+1] == current[i]):
+            count+= 1
+        else:
+            if(count>maxCount):
+                maxCount = count
+                num = current[i]
+            count = 1
+    print(num)
+
 
 
 
@@ -125,7 +150,6 @@ def categorize(current):
         suitDict = {"diamonds", "clubs", "hearts", "spades"}
         output += numList[num//4]
         output += suitList[num%4]
-    
     
 
     
