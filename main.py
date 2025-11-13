@@ -1,3 +1,5 @@
+
+
 handValues = {"High Card" :0, 
               "Pair" : 0, 
               "Two Pair" : 0, 
@@ -9,7 +11,7 @@ handValues = {"High Card" :0,
               "Straight Flush:" : 0}
               
 hands = []
-for key, value in handValues:
+for key in handValues:
     hands.append(key)
 
 iterations = [1,10,100,1000,10000,100000,1000000,10000000]
@@ -51,7 +53,7 @@ def handMenu(evt):
     return selectHand.value
 
 def iterations(evt):
-    return iterations.value
+    return selectIterations.value
 
 def startSim(evt):
     running = True
@@ -113,21 +115,21 @@ def isFlush(current):
 
 def isStraight(current):
     current.sort()
-    if((current[1] == current[0] + 1) and (current[2] == current[1] + 1) and (current[3] == current[2] + 1) and (current[4] == current[3] + 1)):
-        print(True) 
-    else if((current[2] == current[1] + 1) and (current[3] == current[2] + 1) and (current[4] == current[3] + 1) and (current[5] == current[4] + 1)):
-        print(True) 
-    else if((current[3] == current[2] + 1) and (current[4] == current[3] + 1) and (current[5] == current[4] + 1) and (current[6] == current[5] + 1)):
-        print(True)
-    else:
-        print(False)
+    if((current[1] == current[0] +  1) and (current[2] == current[1] + 1) and (current[3] == current[2] + 1) and (current[4] == current[3] + 1)):
+        return True
+    elif(current[2] == current[1] + 1) and (current[3] == current[2] + 1) and (current[4] == current[3] + 1) and (current[5] == current[4] + 1):
+        return True
+    elif(current[3] == current[2] + 1) and (current[4] == current[3] + 1) and (current[5] == current[4] + 1) and (current[6] == current[5] + 1):
+        return True
+    else:      
+        return False
 
 def firstCommon(current):
     current.sort()
     maxCount = 0
     count = 1
     num = 0
-    for i in range(0,5,1):
+    for i in range(7):
         if(current[i+1] == current[i]):
             count+= 1
         else:
@@ -135,18 +137,29 @@ def firstCommon(current):
                 maxCount = count
                 num = current[i]
             count = 1
-    print(num)
-
-
-
-
-
+    return num
 def secondCommon(current):
+    num2 = firstCommon(current)
+    current.sort()
+    maxCount = 0
+    count = 1
+    num = 0
+    current.sort
+    for i in range(7):
+        if(current[i+1] == current[i] and current[i] != num2):
+            count+= 1
+        else:
+            if(count>maxCount):
+                maxCount = count
+                num = current[i]
+
+            count = 1
+    return num
 
 def categorize(current):
     #handList = {"High Card" : 0, "Pair" : 0, "Two Pair" : 0, "Three Of A Kind" : 0, "Straight" : 0, "Flush" : 0, "Full House" : 0, "Four-Of-A-Kind" : 0, "Straight Flush:" : 0}
     for i in range(0, current.len-1, 1):
-        numDict = {'ace', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'jack', 'queen', 'king'}
+        numDict = {"ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "jack", "queen", "king"}
         suitDict = {"diamonds", "clubs", "hearts", "spades"}
         output += numList[num//4]
         output += suitList[num%4]
