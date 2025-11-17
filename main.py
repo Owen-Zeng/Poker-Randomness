@@ -157,12 +157,25 @@ def secondCommon(current):
     return num
 
 def categorize(current):
-    #handList = {"High Card" : 0, "Pair" : 0, "Two Pair" : 0, "Three Of A Kind" : 0, "Straight" : 0, "Flush" : 0, "Full House" : 0, "Four-Of-A-Kind" : 0, "Straight Flush:" : 0}
-    for i in range(0, current.len-1, 1):
-        numDict = {"ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "jack", "queen", "king"}
-        suitDict = {"diamonds", "clubs", "hearts", "spades"}
-        output += numList[num//4]
-        output += suitList[num%4]
+    #Key {"High Card" = 0, "Pair" = 1, "Two Pair" = 2, "Three Of A Kind" = 3, "Straight" = 4, "Flush" = 5, "Full House" = 6, "Four-Of-A-Kind" = 7, "Straight Flush:" = 8}
+
+    if (isStraightFlush(current):
+        return 8
+    if (firstCommon(current) == 4):
+        return 7
+    if (firstCommon(current) == 3 && secondCommon(current) >= 2):
+        return 6
+    if (isFlush(current)):
+        return 5
+    if (isStraight(current)):
+        return 4
+    if (firstCommon(current) == 3):
+        return 3
+    if (firstCommon(current) == 2 && secondCommon(current)):
+        return 2
+    if (firstCommon(current) == 2):
+        return 1
+    else return 0
     
 
     
