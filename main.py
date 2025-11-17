@@ -14,7 +14,6 @@ hands = []
 for key in handValues:
     hands.append(key)
 
-iterations = [1,10,100,1000,10000,100000,1000000,10000000]
 probabilities = {"High Card" : 0.174,
                 "Pair" : 0.438, 
                 "Two Pair" : 0.235, 
@@ -34,29 +33,51 @@ def convert(num):
     output += suitList[num%4]
     print(output)
 
-# USER INPUT===========================================
-iterations =0
+# USER INPUT===========================================================
+iterations = 0
+edgeExclusion = 0
+
+
 wt = wtext("Select Hand: ")
 wt.text = "Select Hand: "
 selectHand = menu(bind = handMenu,  wtext = "Select a Hand", choices = hands)
 
-wt = wtext("\nSelect Iterations: ")
-wt.text = "\nSelect Iterations: "
-selectIterations = menu(bind = iterations,wtext = "Select Number of Iterations", choices = iterations)
+wt = wtext(text = "\nSelect Iterations: ")
 
-wt = wtext("\nEdge Exclusion: ")
-wt.text = "\nEdge Exclusion: "
+selectIterations = slider(bind= iterationsSlider, min = 0, max =6, step = 1)
+Iwt = wtext(text = "1")
 
+
+wt = wtext(text = "\nEdge Exclusion: ")
+edge = slider(bind = edgeSlider, min = 0, max = 45, step = 5)
+Ewt = wtext(text = edge.value)
+
+wt = wtext(text = "\nStart Simulation")
+start = button(bind = startSim, text = "Start Simulation")
 
 
 def handMenu(evt):
     return selectHand.value
 
-def iterations(evt):
+def iterationsSlider(evt):
+    Iwt.text = selectIteraions.value
+    print("buhbuhbuhubh")
     return selectIterations.value
+
+def edgeSlider(evt):
+    return edge.value
 
 def startSim(evt):
     running = True
+    
+while True:
+    rate(10)
+    iterations = int( pow(10, selectIterations.value))
+    Iwt.text = "" + iterations
+    
+    edgeExclusion = int(edge.value)
+    Ewt.text = edgeExclusion + "%"
+
 
 r = 4
 X0 = 0.1
@@ -64,6 +85,7 @@ N = 1000
 
 X = []
 X[0] = X0
+
 
 def logistic(r, currX):
     return r * currX * (1 - currX)
@@ -75,10 +97,12 @@ def logistic(r, currX):
 # d.plot(0, X[0])
 #c.plot(0, X[0])
 
-for i in range(1, N, 1):
+
+#come back to this later this m value might be another slider
+m = 1000
+for i in range(1, m, 1):
     X[i] = logistic(r,X[i-1])    
-    # d.plot(i, X[i])
-    # c.plot(i, X[i])
+
 
 
 deckSize = 52
@@ -97,7 +121,7 @@ for i in range(0, 1, 7):
 
 def isFlush(current):
     hold = {"d":0, "c":0, "h":0, "s":0}
-    for i in range(0,6,1):
+    for i in range(len(current)):
         if(current[i] % 4 == 0):
             hold["d"] += 1
         elif(current[i] % 4 == 1):
@@ -159,28 +183,33 @@ def secondCommon(current):
 def categorize(current):
     #Key {"High Card" = 0, "Pair" = 1, "Two Pair" = 2, "Three Of A Kind" = 3, "Straight" = 4, "Flush" = 5, "Full House" = 6, "Four-Of-A-Kind" = 7, "Straight Flush:" = 8}
 
-    if (isStraightFlush(current):
+    if (isStraightFlush(current)):
+        handValues["Straight Flush"] = handValues["Straight Flush"]+1
         return 8
     if (firstCommon(current) == 4):
+        handValues["Four-Of-A-Kind"] = handValues["Four-Of-A-Kind"]+1
         return 7
-    if (firstCommon(current) == 3 && secondCommon(current) >= 2):
+    if (firstCommon(current) == 3 and secondCommon(current) >= 2):
+        handValues["Full House"] = handValues["Full House"]+1
         return 6
     if (isFlush(current)):
+        handValues["Flush"] = handValues["Flush"]+1
         return 5
     if (isStraight(current)):
+        handValues["Straight"] = handValues["Straight"]+1
         return 4
     if (firstCommon(current) == 3):
+        handValues["Three of A Kind"] = handValues["Three of A Kind"]+1
         return 3
-    if (firstCommon(current) == 2 && secondCommon(current)):
+    if (firstCommon(current) == 2 and secondCommon(current)):
+        handValues["Two Pair"] = handValues["Two Pair"]+1
         return 2
     if (firstCommon(current) == 2):
+        handValues["Pair"] = handValues["Pair"]+1
         return 1
-    else return 0
-    
-
-    
-
+    else:
+        handValues["High Card"] = handValues["High Card"]+1
+        return 0
 
 
 
-    
