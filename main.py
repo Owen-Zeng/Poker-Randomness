@@ -139,7 +139,7 @@ def toggleSim(evt):
                 
         pearson = calculate_pearson(handValues, num_iterations)
 
-        result_text = "Simulation Complete!\n"
+        result_text = "\Simulation Complete!\n"
         result_text += "Iterations: " + str(num_iterations) + "\n"
         result_text += "Edge Exclusion: " + str(edge.value) + "%\n\n"
         result_text += "Pearson Correlation: " + str(pearson) + "\n\n"
@@ -237,8 +237,8 @@ def firstCommon(currentt):
                 num = current[i-1]
             count = 1
     if(count > maxCount):
-        num = current[-1]
-    return num
+        maxCount =  count
+    return maxCount
     
 def secondCommon(currentt):
     num2 = firstCommon(currentt)
@@ -259,8 +259,8 @@ def secondCommon(currentt):
             count = 1
     if(count > maxCount):
         num = current[-1]
-    return num
-    
+    return count
+
 def categorize(current):
     #Key {"High Card" = 0, "Pair" = 1, "Two Pair" = 2, "Three Of A Kind" = 3, "Straight" = 4, "Flush" = 5, "Full House" = 6, "Four-Of-A-Kind" = 7, "Straight Flush:" = 8}
 
@@ -282,7 +282,7 @@ def categorize(current):
     if (firstCommon(current) == 3):
         handValues["Three Of A Kind"] = handValues["Three Of A Kind"]+1
         return 3
-    if (firstCommon(current) == 2 and secondCommon(current)):
+    if (firstCommon(current) == 2 and secondCommon(current) == 2):
         handValues["Two Pair"] = handValues["Two Pair"]+1
         return 2
     if (firstCommon(current) == 2):
