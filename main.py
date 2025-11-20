@@ -33,6 +33,9 @@ def convert(num):
     output += suitList[num%4]
     print(output)
 
+def logistic(r, currX):
+    return r * currX * (1 - currX)
+
 # USER INPUT===========================================================
 iterations = 0
 edgeExclusion = 0
@@ -79,16 +82,6 @@ while True:
     Ewt.text = edgeExclusion + "%"
 
 
-r = 4
-X0 = 0.1
-N = 1000
-
-X = []
-X[0] = X0
-
-
-def logistic(r, currX):
-    return r * currX * (1 - currX)
 
 # Graph = graph(title = "Pop Fraction vs Iterate Number", xtitle = "Iterate Number", ytitle = "Pop Fraction", ymin = 0, ymax = 1)
 # d = gdots(graph = Graph)
@@ -99,25 +92,7 @@ def logistic(r, currX):
 
 
 #come back to this later this m value might be another slider
-m = 1000
-for i in range(1, m, 1):
-    X[i] = logistic(r,X[i-1])    
 
-
-
-deckSize = 52
-def rand(iterate):
-    for i in range(0, deckSize, 1):
-        if (i * 1/deckSize > iterate):
-            deckSize-=1
-            return i
-    return -1
-
-print(rand(X[deckSize-1]))
-
-current = []
-for i in range(0, 1, 7):
-    current[i] = rand(X[deckSize-1-i])
 
 def isFlush(current):
     hold = {"d":0, "c":0, "h":0, "s":0}
@@ -211,5 +186,44 @@ def categorize(current):
         handValues["High Card"] = handValues["High Card"]+1
         return 0
 
+def playOneGame():
+    for i in range(0, iterations, 1):
+        r = 4
+        X0 = 0.1
+        m = 1000 #update this value
+
+    X = []
+    X[0] = X0
+
+    for i in range(1, m, 1):
+        X[i] = logistic(r,X[i-1])    
+
+    deckSize = 52
+    for i in range (edgeExclusion, deckSize, 1-edgeExclusion):
+        if (i * 1/deckSize > iterate):
+            deckSize -= 1
+            return i
+    
+    #this part needs major overhaul - overseer
+    # def rand(iterate, decksize):
+    #     for i in range(0, deckSize, 1):
+    # keep this and ^^^ss
+    #         if (i * 1/deckSize > iterate):
+    #             deckSize-=1
+    #             return i
+    #     return -1
+    current = []
+    for i in range(0, 7, 1):
+        for j in range (edgeExclusion, 1-edgeExclusion, (1-2*edgeExclusion)/deckSize):
+            n=0
+            if (edgeExclusion+j*((1-2*edgeExclusion)/deckSize)>n):
+                deckSize-=1
+            n+=1
+            
 
 
+        current[i] = 
+
+
+
+    categorize(current)
