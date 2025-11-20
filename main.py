@@ -162,36 +162,45 @@ def isStraight(current):
             count = 1
     return False
 
-def firstCommon(current):
+def firstCommon(currentt):
+    current = currentt.copy()
+    for i in range(len(current)):
+        current[i] = current[i]//4 + 1
     current.sort()
     maxCount = 0
     count = 1
     num = 0
-    for i in range(7):
-        if(current[i+1] == current[i]):
+    for i in range(1,len(current)):
+        if(current[i] == current[i-1]):
             count+= 1
         else:
             if(count>maxCount):
                 maxCount = count
-                num = current[i]
+                num = current[i-1]
             count = 1
+    if(count > maxCount):
+        num = current[-1]
     return num
-def secondCommon(current):
-    num2 = firstCommon(current)
+    
+def secondCommon(currentt):
+    num2 = firstCommon(currentt)
+    current = currentt.copy()
+    for i in range(len(current)):
+        current[i] = current[i] // 4 + 1
     current.sort()
     maxCount = 0
     count = 1
     num = 0
-    current.sort
-    for i in range(7):
-        if(current[i+1] == current[i] and current[i] != num2):
+    for i in range(1, len(current)):
+        if(current[i] == current[i-1] and current[i] != num2):
             count+= 1
         else:
             if(count>maxCount):
                 maxCount = count
-                num = current[i]
-
+                num = current[i-1]
             count = 1
+    if(count > maxCount):
+        num = current[-1]
     return num
 
 def categorize(current):
