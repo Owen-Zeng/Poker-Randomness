@@ -66,30 +66,96 @@ def iterationsSlider(evt):
 def edgeSlider(evt):
     return edge.value
 
+def calculate_pearson(observed_counts, total_games):
+    # Expected probabilities
+    probs = [
+        0.174,   # High Card
+        0.438,   # Pair
+        0.235,   # Two Pair
+        0.048,   # Three of a Kind
+        0.046,   # Straight
+        0.030,   # Flush
+        0.026,   # Full House
+        0.0017,  # Four of a Kind
+        0.00031  # Straight Flush
+    ]
+    
+    hand_names = [
+        "High Card", "Pair", "Two Pair", "Three of A Kind", 
+        "Straight", "Flush", "Full House", "Four-Of-A-Kind", "Straight Flush"
+    ]
+    
+    observed = []
+    expected = []
+    
+    for i in range(len(hand_names)):
+        name = hand_names[i]
+        obs = observed_counts.get(name, 0)
+        exp = probs[i] * total_games
+        
+        observed.append(obs)
+        expected.append(exp)
+        
+    n = len(observed)
+    sum_x = sum(observed)
+    sum_y = sum(expected)
+    sum_xy = sum(x * y for x, y in zip(observed, expected))
+    sum_x2 = sum(x * x for x in observed)
+    sum_y2 = sum(y * y for y in expected)
+    
+    numerator = n * sum_xy - sum_x * sum_y
+    denominator = ((n * sum_x2 - sum_x**2) * (n * sum_y2 - sum_y**2)) ** 0.5
+    
+    if denominator == 0:
+        return 0
+    return numerator / denominator
+
 def toggleSim(evt):
-
-    running = True
-    start.disabled = True
-    edge.disabled = False
-    selectHand.disabled = False
+    global running
     
-    Swt.text = "\n"
+    if not running:
+        running = True
+        start.text = "Running..."
+        start.disabled = True
+        edge.disabled = True
+        selectHand.disabled = True
+        selectIterations.disabled = True
 
-    
-#    if(!running):
-#        running = True
-#        Swt.text=  "\nStop Simulation   "
-#        start.text = "Stop"
-#        print("currently true")
-#    else:
-#        running = False
-#        Swt.text = "\nStart Simulation   "
-#        start.text= "Start"
-#        print("currently false")\
+        for key in handValues:
+            handValues[key] = 0
+            
+        num_iterations = int(pow(10, selectIterations.value))
+        current_x = 0.1
+        
+        for i in range(num_iterations):
+            current_x = playOneGame(current_x)
+            
+            if i % 100 == 0:
+                rate(1000) 
+                
+        pearson = calculate_pearson(handValues, num_iterations)
 
+        result_text = "Simulation Complete!\n"
+        result_text += "Iterations: " + str(num_iterations) + "\n"
+        result_text += "Edge Exclusion: " + str(edge.value) + "%\n\n"
+        result_text += "Pearson Correlation: " + str(pearson) + "\n\n"
+        result_text += "Hand Counts:\n"
+        
+        for key in handValues:
+            result_text += key + ": " + str(handValues[key]) + "\n"
+            
+        wt.text = result_text
+        
+        running = False
+        start.text = "Start"
+        start.disabled = False
+        edge.disabled = False
+        selectHand.disabled = False
+        selectIterations.disabled = False
+    else:
+        running = False
+        start.text = "Start"
 
-    
-    
 if(!running):
     edge.disabled = True
     selectHand.disabled = True
@@ -102,14 +168,6 @@ while True:
     edgeExclusion = int(edge.value)
     Ewt.text = edgeExclusion + "%"
 
-
-
-# Graph = graph(title = "Pop Fraction vs Iterate Number", xtitle = "Iterate Number", ytitle = "Pop Fraction", ymin = 0, ymax = 1)
-# d = gdots(graph = Graph)
-# #c = gcurve(graph = Graph)
-
-# d.plot(0, X[0])
-#c.plot(0, X[0])
 
 
 #come back to this later this m value might be another slider
@@ -230,44 +288,43 @@ def categorize(current):
         handValues["High Card"] = handValues["High Card"]+1
         return 0
 
-def playOneGame():
-    for i in range(0, iterations, 1):
-        r = 4
-        X0 = 0.1
-        m = 1000 #update this value
+def logistic(r, currX):
+    return r * currX * (1 - currX)
 
-    X = []
-    X[0] = X0
+def get_next_valid_x(r, current_x, edgeExclusion):
+    # edgeExclusion is 0 to 45
+    edge_frac = edgeExclusion / 100.0
 
-    for i in range(1, m, 1):
-        X[i] = logistic(r,X[i-1])    
+    while True:
+        current_x = logistic(r, current_x)
+        if current_x >= edge_frac and current_x <= (1.0 - edge_frac):
+            return current_x
 
-    deckSize = 52
-    for i in range (edgeExclusion, deckSize, 1-edgeExclusion):
-        if (i * 1/deckSize > iterate):
-            deckSize -= 1
-            return i
+def deal_hand(r, current_x, edgeExclusion):
+    deck = []
+    for i in range(52):
+        deck.append(i)
+    hand = []
     
-    #this part needs major overhaul - overseer
-    # def rand(iterate, decksize):
-    #     for i in range(0, deckSize, 1):
-    # keep this and ^^^ss
-    #         if (i * 1/deckSize > iterate):
-    #             deckSize-=1
-    #             return i
-    #     return -1
-    current = []
-    for i in range(0, 7, 1):
-        for j in range (edgeExclusion, 1-edgeExclusion, (1-2*edgeExclusion)/deckSize):
-            n=0
-            if (edgeExclusion+j*((1-2*edgeExclusion)/deckSize)>n):
-                deckSize-=1
-            n+=1
-            
+    for i in range(7):
+        current_x = get_next_valid_x(r, current_x, edgeExclusion)
 
+        edge_frac = edgeExclusion / 100.0
+        x = (current_x - edge_frac) / (1.0 - 2 * edge_frac)
+        
+        index = int(x * len(deck))
+        if index >= len(deck):
+            index = len(deck) - 1
+        
+        card = deck.pop(index)
+        hand.append(card)
 
-        current[i] = 
+    return hand, current_x
 
-
-
-    categorize(current)
+def playOneGame(current_x_seed):
+    r = 4.0
+    current_x = current_x_seed
+    edge_val = edge.value
+    hand, next_x = deal_hand(r, current_x, edge_val)
+    categorize(hand)
+    return next_x
