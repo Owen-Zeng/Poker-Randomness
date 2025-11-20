@@ -33,51 +33,72 @@ def convert(num):
     output += suitList[num%4]
     print(output)
 
-def logistic(r, currX):
-    return r * currX * (1 - currX)
-
 # USER INPUT===========================================================
 iterations = 0
 edgeExclusion = 0
+running = False
 
 
 wt = wtext("Select Hand: ")
 wt.text = "Select Hand: "
-selectHand = menu(bind = handMenu,  wtext = "Select a Hand", choices = hands)
+selectHand = menu(bind = handMenu,  wtext = "Select a Hand", choices = hands, disabled = True)
 
 wt = wtext(text = "\nSelect Iterations: ")
 
-selectIterations = slider(bind= iterationsSlider, min = 0, max =6, step = 1)
+selectIterations = slider(bind= iterationsSlider, min = 0, max =6, step = 1, disabled = True)
 Iwt = wtext(text = "1")
 
 
 wt = wtext(text = "\nEdge Exclusion: ")
 edge = slider(bind = edgeSlider, min = 0, max = 45, step = 5)
-Ewt = wtext(text = edge.value)
+Ewt = wtext(text = edge.value + "%")
 
-wt = wtext(text = "\nStart Simulation")
-start = button(bind = startSim, text = "Start Simulation")
-
+Swt = wtext(text = "\nStart Simulation   ")
+start = button(bind = toggleSim, text = "Start")
 
 def handMenu(evt):
     return selectHand.value
 
 def iterationsSlider(evt):
     Iwt.text = selectIteraions.value
-    print("buhbuhbuhubh")
     return selectIterations.value
 
 def edgeSlider(evt):
     return edge.value
 
-def startSim(evt):
+def toggleSim(evt):
+
     running = True
+    start.disabled = True
+    edge.disabled = False
+    selectHand.disabled = False
     
+    Swt.text = "\n"
+
+    
+#    if(!running):
+#        running = True
+#        Swt.text=  "\nStop Simulation   "
+#        start.text = "Stop"
+#        print("currently true")
+#    else:
+#        running = False
+#        Swt.text = "\nStart Simulation   "
+#        start.text= "Start"
+#        print("currently false")\
+
+
+    
+    
+if(!running):
+    edge.disabled = True
+    selectHand.disabled = True
+
 while True:
     rate(10)
     iterations = int( pow(10, selectIterations.value))
     Iwt.text = "" + iterations
-    
+
     edgeExclusion = int(edge.value)
     Ewt.text = edgeExclusion + "%"
 
