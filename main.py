@@ -8,7 +8,7 @@ handValues = {"High Card" :0,
               "Flush" : 0, 
               "Full House" : 0, 
               "Four-Of-A-Kind" : 0, 
-              "Straight Flush:" : 0}
+              "Straight Flush" : 0}
               
 hands = []
 for key in handValues:
@@ -135,7 +135,7 @@ def toggleSim(evt):
             current_x = playOneGame(current_x)
             
             if i % 100 == 0:
-                rate(1000) 
+                rate(1000)
                 
         pearson = calculate_pearson(handValues, num_iterations)
 
@@ -260,7 +260,7 @@ def secondCommon(currentt):
     if(count > maxCount):
         num = current[-1]
     return num
-
+    
 def categorize(current):
     #Key {"High Card" = 0, "Pair" = 1, "Two Pair" = 2, "Three Of A Kind" = 3, "Straight" = 4, "Flush" = 5, "Full House" = 6, "Four-Of-A-Kind" = 7, "Straight Flush:" = 8}
 
@@ -280,7 +280,7 @@ def categorize(current):
         handValues["Straight"] = handValues["Straight"]+1
         return 4
     if (firstCommon(current) == 3):
-        handValues["Three of A Kind"] = handValues["Three of A Kind"]+1
+        handValues["Three Of A Kind"] = handValues["Three Of A Kind"]+1
         return 3
     if (firstCommon(current) == 2 and secondCommon(current)):
         handValues["Two Pair"] = handValues["Two Pair"]+1
