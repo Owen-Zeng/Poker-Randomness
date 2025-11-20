@@ -99,9 +99,13 @@ def calculate_pearson(observed_counts, total_games):
     n = len(observed)
     sum_x = sum(observed)
     sum_y = sum(expected)
-    sum_xy = sum(x * y for x, y in zip(observed, expected))
-    sum_x2 = sum(x * x for x in observed)
-    sum_y2 = sum(y * y for y in expected)
+    sum_xy = 0
+    sum_x2 = 0
+    sum_y2 = 0
+    for i in range(n):
+        sum_xy += observed[i] * expected[i]
+        sum_x2 += observed[i] * observed[i]
+        sum_y2 += expected[i] * expected[i]
     
     numerator = n * sum_xy - sum_x * sum_y
     denominator = ((n * sum_x2 - sum_x**2) * (n * sum_y2 - sum_y**2)) ** 0.5
