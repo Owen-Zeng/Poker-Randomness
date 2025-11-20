@@ -98,61 +98,84 @@ def isFlush(current):
     hold = {"d":0, "c":0, "h":0, "s":0}
     for i in range(len(current)):
         if(current[i] % 4 == 0):
-            hold["d"] += 1
+          hold["d"] += 1
         elif(current[i] % 4 == 1):
-            hold["c"] += 1
+          hold["c"] += 1
         elif(current[i] % 4 == 2):
-            hold["h"] += 1
+          hold["h"] += 1
         elif(current[i] % 4 == 3):
-            hold["s"] += 1
-
+          hold["s"] += 1
     for val in hold.values():
         if (val == 5):
             return True
-        else:
-            return False
-
+    return False
+    
+    
+def isStraightFlush(current):
+    arrSuits = {0:[], 1:[], 2:[], 3:[]}
+    for i in current:
+        suit = i % 4
+        arrSuits[suit].append(i)
+    for j in arrSuits:
+        print(arrSuits[j])
+        if len(arrSuits[j]) >= 5:
+            if isStraight(arrSuits[j]): 
+                return True
+    return False
+    
 def isStraight(current):
-    current.sort()
-    if((current[1] == current[0] +  1) and (current[2] == current[1] + 1) and (current[3] == current[2] + 1) and (current[4] == current[3] + 1)):
-        return True
-    elif(current[2] == current[1] + 1) and (current[3] == current[2] + 1) and (current[4] == current[3] + 1) and (current[5] == current[4] + 1):
-        return True
-    elif(current[3] == current[2] + 1) and (current[4] == current[3] + 1) and (current[5] == current[4] + 1) and (current[6] == current[5] + 1):
-        return True
-    else:      
-        return False
+    for j in range(len(current)):
+        current[j] = current[j]//4 + 1
+    hold = sorted(set(current))
+    count = 1
+    for i in range(1, len(hold)):
+        if hold[i] == hold[i-1] + 1:
+            count += 1
+            if count == 5:
+                return True
+        else:
+            count = 1
+    return False
 
-def firstCommon(current):
+def firstCommon(currentt):
+    current = currentt.copy()
+    for i in range(len(current)):
+        current[i] = current[i]//4 + 1
     current.sort()
     maxCount = 0
     count = 1
     num = 0
-    for i in range(7):
-        if(current[i+1] == current[i]):
+    for i in range(1,len(current)):
+        if(current[i] == current[i-1]):
             count+= 1
         else:
             if(count>maxCount):
                 maxCount = count
-                num = current[i]
+                num = current[i-1]
             count = 1
+    if(count > maxCount):
+        num = current[-1]
     return num
-def secondCommon(current):
-    num2 = firstCommon(current)
+    
+def secondCommon(currentt):
+    num2 = firstCommon(currentt)
+    current = currentt.copy()
+    for i in range(len(current)):
+        current[i] = current[i] // 4 + 1
     current.sort()
     maxCount = 0
     count = 1
     num = 0
-    current.sort
-    for i in range(7):
-        if(current[i+1] == current[i] and current[i] != num2):
+    for i in range(1, len(current)):
+        if(current[i] == current[i-1] and current[i] != num2):
             count+= 1
         else:
             if(count>maxCount):
                 maxCount = count
-                num = current[i]
-
+                num = current[i-1]
             count = 1
+    if(count > maxCount):
+        num = current[-1]
     return num
 
 def categorize(current):
