@@ -62,6 +62,10 @@ start = button(bind = toggleSim, text = "Start")
 
 output = wtext(text = "")
 
+handGraph = graph(title="Hand Frequency", xtitle="Count", ytitle="Hand Type (Index)", width=600, height=400)
+handBars = ghbars(graph=handGraph, delta=0.8, color=color.blue)
+
+
 def handMenu(evt):
     return selectHand.value
 
@@ -148,6 +152,13 @@ def toggleSim(evt):
                 
         pearson = calculate_pearson(handValues, num_iterations)
 
+        data = []
+        keys = list(handValues.keys())
+        for i in range(len(keys)):
+            data.append([handValues[keys[i]], i])
+        handBars.data = data
+
+
         result_text = "\nSimulation Complete!\n"
         result_text += "Iterations: " + str(num_iterations) + "\n"
         result_text += "Edge Exclusion: " + str(edge.value) + "%\n\n"
@@ -169,7 +180,7 @@ def toggleSim(evt):
         running = False
         start.text = "Start"
 
-if(!running):
+if not running:
     selectHand.disabled = True
 
 while True:
