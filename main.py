@@ -62,6 +62,7 @@ hist_canvas = canvas(title='Hand Histogram', width=600, height=400, align='right
 hist_canvas.camera.pos = vector(5, 0, 15)
 hist_bars = {}
 hist_labels = {}
+hist_count_labels = {}
 hist_scale = 20.0 
 
 def init_histogram():
@@ -76,7 +77,11 @@ def init_histogram():
 def update_histogram(total_games):
     if total_games == 0: return
     
-    for key in handValues:
+    hist_canvas.select()
+    y_pos = 4
+    keys = list(handValues.keys())
+    
+    for key in keys:
         count = handValues[key]
         fraction = count / total_games
         bar_len = fraction * hist_scale
@@ -84,7 +89,14 @@ def update_histogram(total_games):
         start_x = 0
         hist_bars[key].length = bar_len
         hist_bars[key].pos.x = start_x + bar_len / 2
-
+        
+        if key not in hist_count_labels:
+            hist_count_labels[key] = text(canvas=hist_canvas, pos=vector(bar_len + 0.3, y_pos, 0), text=str(count), height=0.3, align='left', color=color.yellow)
+        else:
+            hist_count_labels[key].pos.x = bar_len + 0.3
+            hist_count_labels[key].text = str(count)
+        
+        y_pos -= 1
 
 init_histogram()
 
