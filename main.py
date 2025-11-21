@@ -200,16 +200,16 @@ def isStraightFlush(current):
         suit = i % 4
         arrSuits[suit].append(i)
     for j in arrSuits:
-        print(arrSuits[j])
         if len(arrSuits[j]) >= 5:
             if isStraight(arrSuits[j]): 
                 return True
     return False
     
 def isStraight(current):
-    for j in range(len(current)):
-        current[j] = current[j]//4 + 1
-    hold = sorted(set(current))
+    ranks = []
+    for c in current:
+        ranks.append(c // 4 + 1)
+    hold = sorted(set(ranks))
     count = 1
     for i in range(1, len(hold)):
         if hold[i] == hold[i-1] + 1:
@@ -220,46 +220,24 @@ def isStraight(current):
             count = 1
     return False
 
+def get_counts(currentt):
+    ranks = [c // 4 + 1 for c in currentt]
+    counts = {}
+    for r in ranks:
+        counts[r] = counts.get(r, 0) + 1
+    return counts
+
 def firstCommon(currentt):
-    current = currentt.copy()
-    for i in range(len(current)):
-        current[i] = current[i]//4 + 1
-    current.sort()
-    maxCount = 0
-    count = 1
-    num = 0
-    for i in range(1,len(current)):
-        if(current[i] == current[i-1]):
-            count+= 1
-        else:
-            if(count>maxCount):
-                maxCount = count
-                num = current[i-1]
-            count = 1
-    if(count > maxCount):
-        maxCount =  count
-    return maxCount
+    counts = get_counts(currentt)
+    if not counts: return 0
+    return max(counts.values())
     
 def secondCommon(currentt):
-    num2 = firstCommon(currentt)
-    current = currentt.copy()
-    for i in range(len(current)):
-        current[i] = current[i] // 4 + 1
-    current.sort()
-    maxCount = 0
-    count = 1
-    num = 0
-    for i in range(1, len(current)):
-        if(current[i] == current[i-1] and current[i] != num2):
-            count+= 1
-        else:
-            if(count>maxCount):
-                maxCount = count
-                num = current[i-1]
-            count = 1
-    if(count > maxCount):
-        num = current[-1]
-    return count
+    counts = get_counts(currentt)
+    values = sorted(counts.values(), reverse=True)
+    if len(values) >= 2:
+        return values[1]
+    return 0
 
 def categorize(current):
     #Key {"High Card" = 0, "Pair" = 1, "Two Pair" = 2, "Three Of A Kind" = 3, "Straight" = 4, "Flush" = 5, "Full House" = 6, "Four-Of-A-Kind" = 7, "Straight Flush:" = 8}
