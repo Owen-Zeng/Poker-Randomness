@@ -91,7 +91,7 @@ def update_histogram(total_games):
         hist_bars[key].pos.x = start_x + bar_len / 2
         
         if key not in hist_count_labels:
-            hist_count_labels[key] = text(canvas=hist_canvas, pos=vector(bar_len + 0.3, y_pos, 0), text=str(count), height=0.3, align='left', color=color.yellow)
+            hist_count_labels[key] = text(canvas=hist_canvas, pos=vector(bar_len + 0.3, y_pos-0.1, 0), text=str(count), height=0.3, align='left', color=color.yellow)
         else:
             hist_count_labels[key].pos.x = bar_len + 0.3
             hist_count_labels[key].text = str(count)
