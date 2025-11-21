@@ -83,7 +83,7 @@ def updatePearson(edgeVal, pearsonVal):
         pearsonBars.plot(edge, edgePearsonData[edge])
 
 def init_histogram():
-    hist_canvas.select()
+    # hist_canvas.select()
     y_pos = 4
     keys = list(handValues.keys())
     for key in keys:
@@ -94,7 +94,7 @@ def init_histogram():
 def update_histogram(total_games):
     if total_games == 0: return
     
-    hist_canvas.select()
+    # hist_canvas.select()
     y_pos = 4
     keys = list(handValues.keys())
     
@@ -116,17 +116,21 @@ def update_histogram(total_games):
         y_pos -= 1
 
 def reset_histogram():
-    for key in hist_bars:
-        hist_bars[key].length = 0
-        hist_bars[key].pos.x = 0
-    for key in list(hist_count_labels.keys()):
-        hist_count_labels[key].text = "0"
-        hist_count_labels[key].pos.x = 0.3
+    # for key in hist_bars:
+    #     hist_bars[key].length = 0
+    #     hist_bars[key].pos.x = 0
+    # for key in list(hist_count_labels.keys()):
+    #     hist_count_labels[key].text = "0"
+    #     hist_count_labels[key].pos.x = 0.3
     # hist_bars = {}
-    # hist_labels= {}
-    # hist_count_labels = {}
+    hist_canvas = canvas(title='Hand Histogram', width=600, height=400, align='left', background=color.black)
+    hist_canvas.camera.pos = vector(5, 0, 15)
+    hist_bars = {}
+    hist_labels = {}
+    hist_count_labels = {}
+    hist_scale = 20.0 
 
-init_histogram()
+# init_histogram()
 
 
 def handMenu(evt):
@@ -203,7 +207,7 @@ def toggleSim(evt):
         for key in handValues:
             handValues[key] = 0
 
-        reset_histogram()
+        # reset_histogram()
             
         num_iterations = int(pow(10, selectIterations.value))
         current_x = seedSlider.value
