@@ -58,6 +58,14 @@ start = button(bind = toggleSim, text = "Start")
 
 output = wtext(text = "")
 
+handGraph = graph(title="Hand Frequency", xtitle="Count", ytitle="Hand Type (Index)", width=600, height=400)
+handBars = ghbars(graph=handGraph, delta=0.8, color=color.blue)
+
+
+handGraph = graph(title="Hand Frequency", xtitle="Count", ytitle="Hand Type (Index)", width=600, height=400)
+handBars = ghbars(graph=handGraph, delta=0.8, color=color.blue)
+
+
 
 
 def iterationsSlider(evt):
@@ -142,6 +150,13 @@ def toggleSim(evt):
                 
         pearson = calculate_pearson(handValues, num_iterations)
 
+        data = []
+        keys = list(handValues.keys())
+        for i in range(len(keys)):
+            data.append([handValues[keys[i]], i])
+        handBars.data = data
+
+
         result_text = "\nSimulation Complete!\n"
         result_text += "Iterations: " + str(num_iterations) + "\n"
         result_text += "Edge Exclusion: " + str(edge.value) + "%\n\n"
@@ -161,6 +176,9 @@ def toggleSim(evt):
     else:
         running = False
         start.text = "Start"
+
+if(!running):
+    selectHand.disabled = True
 
 while True:
     rate(10)
