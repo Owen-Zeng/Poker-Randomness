@@ -39,10 +39,6 @@ edgeExclusion = 0
 running = False
 
 
-wt = wtext("Select Hand: ")
-wt.text = "Select Hand: "
-selectHand = menu(bind = handMenu,  wtext = "Select a Hand", choices = hands, disabled = True)
-
 wt = wtext(text = "\nSelect Iterations: ")
 
 selectIterations = slider(bind= iterationsSlider, min = 0, max =6, step = 1, disabled = True)
@@ -62,8 +58,7 @@ start = button(bind = toggleSim, text = "Start")
 
 output = wtext(text = "")
 
-def handMenu(evt):
-    return selectHand.value
+
 
 def iterationsSlider(evt):
     Iwt.text = selectIteraions.value
@@ -131,7 +126,6 @@ def toggleSim(evt):
         start.text = "Running..."
         start.disabled = True
         edge.disabled = True
-        selectHand.disabled = True
         selectIterations.disabled = True
 
         for key in handValues:
@@ -163,14 +157,10 @@ def toggleSim(evt):
         start.text = "Start"
         start.disabled = False
         edge.disabled = False
-        selectHand.disabled = False
         selectIterations.disabled = False
     else:
         running = False
         start.text = "Start"
-
-if(!running):
-    selectHand.disabled = True
 
 while True:
     rate(10)
