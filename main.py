@@ -68,7 +68,7 @@ hist_scale = 20.0
 pearsonGraph = graph(title="Pearson Coefficient vs Edge Exclusion", 
       xtitle="Edge Exclusion (%)", 
       ytitle="Pearson Coefficient",
-      xmin=0, xmax=50, ymin=0, ymax=1.1)
+      xmin=0, xmax=50, ymin=0, ymax=1.1, align='right')
 
 pearsonBars = gvbars(color=color.blue, delta=4)
 
