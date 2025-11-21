@@ -66,11 +66,12 @@ def drawSpades(x,y,num):
     a = 0.03
     text(pos = vec(x - 0.2, y + 0.2, 0.03), text = hold, color = color.black, height = 0.1)
     text(pos = vec(x + 0.15, y - 0.3, 0.03), text = hold, color = color.black, height = 0.1)
-    topSphere = sphere(pos=vec(x,y+r*.7,a), radius = r, color = color.black)
+    # topSphere = sphere(pos=vec(x,y+r*.7,a), radius = r, color = color.black)
     bl = sphere(pos = vec(x-r*0.8, y - 0.035*.2, a), radius = r, color = color.black)
     b2 = sphere(pos = vec(x+r*0.8, y- 0.035 * 0.2, a), radius = r, color = color.black)
     p1 = pyramid(pos = vec(x,y-r*2, a), size = vec(r*2.0, r*3.5, r*0.4), axis = vec(0,1,0), color = color.black)
     b11 = box(pos = vec(x,y + r*1.1,a), size = vec(r*0.35, r*1.4, r*0.3), color = color.black)
+    p1 = pyramid(pos = vec(x,y+r*.5, a), size = vec(r*2.0, r*3.5, r*0.4), axis = vec(0,1,0), color = color.black)
 def drawHearts(x,y,num):
     hold = str(num)
     if(num == 1):
