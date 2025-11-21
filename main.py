@@ -186,36 +186,31 @@ def calculate_pearson(observed_counts, total_games):
 
 def toggleSim(evt):
     global running
-    
-    try:
-        if not running:
-            running = True
-            start.text = "Running..."
-            start.disabled = True
-            edge.disabled = True
-            selectIterations.disabled = True
+    if not running:
+        running = True
+        start.text = "Running..."
+        start.disabled = True
+        edge.disabled = True
+        selectIterations.disabled = True
 
-            for key in handValues:
-                handValues[key] = 0
+        for key in handValues:
+            handValues[key] = 0
 
-            # reset_histogram()
+        # reset_histogram()
                 
-            num_iterations = int(pow(10, selectIterations.value))
-            current_x = seedSlider.value
-            
-            for i in range(num_iterations):
-                current_x = playOneGame(current_x)
+        num_iterations = int(pow(10, selectIterations.value))
+        current_x = seedSlider.value
+        
+        for i in range(num_iterations):
+            current_x = playOneGame(current_x)
                 
-                if i % 100 == 0:
-                    rate(1000)
+            if i % 100 == 0:
+                rate(1000)
                     
             pearson = calculate_pearson(handValues, num_iterations)
             updatePearson(edge.value, pearson)
 
-            
-            # print("beforehist")
             update_histogram(num_iterations)
-            # print("afterhist")
 
             result_text = "\nSimulation Complete!\n"
             result_text += "Iterations: " + str(num_iterations) + "\n"
@@ -233,18 +228,9 @@ def toggleSim(evt):
             start.disabled = False
             edge.disabled = False
             selectIterations.disabled = False
-        else:
-            running = False
-            start.text = "Start"
-    except Exception as e:
-        output.text = "Error: " + str(e)
-        print("Error:", e)
+    else:
         running = False
         start.text = "Start"
-        start.disabled = False
-        edge.disabled = False
-        selectIterations.disabled = False
-
 
 while True:
     rate(10)
