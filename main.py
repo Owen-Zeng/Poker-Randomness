@@ -58,12 +58,29 @@ start = button(bind = toggleSim, text = "Start")
 
 output = wtext(text = "")
 
-hist_canvas = canvas(title='Hand Histogram', width=600, height=400, align='right', background=color.black)
+hist_canvas = canvas(title='Hand Histogram', width=600, height=400, align='left', background=color.black)
 hist_canvas.camera.pos = vector(5, 0, 15)
 hist_bars = {}
 hist_labels = {}
 hist_count_labels = {}
 hist_scale = 20.0 
+
+pearsonGraph = graph(title="Pearson Coefficient vs Edge Exclusion", 
+      xtitle="Edge Exclusion (%)", 
+      ytitle="Pearson Coefficient",
+      xmin=0, xmax=50, ymin=0, ymax=1.1)
+
+pearsonBars = gvbars(color=color.blue, delta=4)
+
+edgePearsonData = {}
+
+def updatePearson(edgeVal, pearsonVal):
+    global edgePearsonData
+    edgePearsonData[edgeVal] = pearsonVal
+    pearsonBars.delete()
+
+    for edge in sorted(edgePearsonData.keys()):
+        pearsonBars.plot(edge, edgePearsonData[edge])
 
 def init_histogram():
     hist_canvas.select()
@@ -98,7 +115,19 @@ def update_histogram(total_games):
         
         y_pos -= 1
 
+def reset_histogram():
+    for key in hist_bars:
+        hist_bars[key].length = 0
+        hist_bars[key].pos.x = 0
+    for key in list(hist_count_labels.keys()):
+        hist_count_labels[key].text = "0"
+        hist_count_labels[key].pos.x = 0.3
+    # hist_bars = {}
+    # hist_labels= {}
+    # hist_count_labels = {}
+
 init_histogram()
+
 
 def handMenu(evt):
     return selectHand.value
@@ -128,7 +157,7 @@ def calculate_pearson(observed_counts, total_games):
     ]
     
     hand_names = [
-        "High Card", "Pair", "Two Pair", "Three of A Kind", 
+        "High Card", "Pair", "Two Pair", "Three Of A Kind", 
         "Straight", "Flush", "Full House", "Four-Of-A-Kind", "Straight Flush"
     ]
     
@@ -173,6 +202,8 @@ def toggleSim(evt):
 
         for key in handValues:
             handValues[key] = 0
+
+        reset_histogram()
             
         num_iterations = int(pow(10, selectIterations.value))
         current_x = seedSlider.value
@@ -184,8 +215,12 @@ def toggleSim(evt):
                 rate(1000)
                 
         pearson = calculate_pearson(handValues, num_iterations)
+        updatePearson(edge.value, pearson)
+
         
-        update_histogram(num_iterations)
+        # print("beforehist")
+        # update_histogram(num_iterations)
+        # print("afterhist")
 
         result_text = "\nSimulation Complete!\n"
         result_text += "Iterations: " + str(num_iterations) + "\n"
