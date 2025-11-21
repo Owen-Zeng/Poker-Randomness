@@ -1,5 +1,5 @@
 Web VPython 3.2
-
+from vpython import *
 theCanvas = canvas(width = 1200, height = 400)
 theCanvas.autoscale = False
 theCanvas.camera.pos = vector(0,0,2)
@@ -10,7 +10,7 @@ def selfHand(x,y,z):
 def dealt(x,y,z):
     aText = text(pos = vector(x,y,z), text = 'Dealt Cards', align = 'center', height = 0.2, color = color.blue)
 def separate(x,y,z):
-    aBox = box(pos = vec(x,y,z), length = 0.1, height = 50, width = 0.1, color = color.white )
+    aBox = box(pos = vec(x,y,z), length = 0.1, height = 50, width = 0.01, color = color.white )
 def drawSuit(x, y, suit,num):
     if(suit == "diamond"):
         drawDiamond(x,y)
@@ -23,6 +23,13 @@ def drawSuit(x, y, suit,num):
 def drawDiamond(x,y):
     b = box(pos = vector(x,y,0.03), length = 0.15, height = 0.15, width = 0.001, color = color.red)
     b.rotate(angle = pi/4, axis = vector(0,0,1), origin = b.pos)
+def drawClubs(x,y):
+    r = 0.04
+    a = 0.03
+    aSphere = sphere(pos = vec(x - r*.75, y, a), radius = r, color = color.black)
+    bSphere = sphere(pos = vec(x + r*.75, y, a), radius = r, color = color.black)
+    cSphere = sphere(pos = vec(x, y + r*1.1, a), radius = r, color = color.black)
+    base = pyramid(pos = vec(x,y-r*1.6,a), size = vec(r*1.2,r*1.8,r*1.2), axis = vec(0,1,0), color = color.black)
 drawBackgroundCards(-3,0,0)
 drawBackgroundCards(-2,0,0)
 drawBackgroundCards(-1,0,0)
@@ -30,11 +37,12 @@ drawBackgroundCards(0,0,0)
 drawBackgroundCards(1,0,0)
 drawBackgroundCards(2,0,0)
 drawBackgroundCards(3,0,0)
-drawSuit(-3,0,"diamond")
-drawSuit(-2,0,"diamond")
-drawSuit(-1,0,"diamond")
-drawSuit(-0,0,"diamond")
-drawSuit(1,0,"diamond")
+#drawSuit(-3,0,"diamond")
+#drawSuit(-2,0,"diamond")
+#drawSuit(-1,0,"diamond")
+#drawSuit(-0,0,"diamond")
+#drawSuit(1,0,"diamond")
+drawSuit(1,0,"clubs")
 selfHand(-2.5,.5,0)
 dealt(1,.5,0)
 separate(-1.5,0,0)
