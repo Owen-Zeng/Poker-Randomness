@@ -70,7 +70,7 @@ def init_histogram():
     y_pos = 4
     keys = list(handValues.keys())
     for key in keys:
-        hist_labels[key] = text(canvas=hist_canvas, pos=vector(-0.5, y_pos, 0), text=key, height=0.4, align='right', color=color.white)
+        hist_labels[key] = text(canvas=hist_canvas, pos=vector(-0.5, y_pos-0.1, 0), text=key, height=0.4, align='right', color=color.white)
         hist_bars[key] = box(canvas=hist_canvas, pos=vector(0, y_pos, 0), length=0, height=0.8, width=0.1, color=color.cyan)
         y_pos -= 1
 
