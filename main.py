@@ -1,4 +1,4 @@
-# Web VPython 3.2
+Web VPython 3.2
 
 handValues = {"High Card" :0, 
               "Pair" : 0, 
@@ -57,40 +57,6 @@ Swt = wtext(text = "\nStart Simulation   ")
 start = button(bind = toggleSim, text = "Start")
 
 output = wtext(text = "")
-
-
-
-hist_canvas = canvas(title='Hand Histogram', width=600, height=400, align='right', background=color.black)
-hist_canvas.camera.pos = vector(5, 0, 15)
-hist_bars = {}
-hist_labels = {}
-hist_scale = 20.0 
-
-def init_histogram():
-    hist_canvas.select()
-    y_pos = 4
-    keys = list(handValues.keys())
-    for key in keys:
-        hist_labels[key] = text(canvas=hist_canvas, pos=vector(-0.5, y_pos, 0), text=key, height=0.4, align='right', color=color.white)
-        hist_bars[key] = box(canvas=hist_canvas, pos=vector(0, y_pos, 0), length=0, height=0.8, width=0.1, color=color.cyan)
-        y_pos -= 1
-
-def update_histogram(total_games):
-    if total_games == 0: return
-    
-    for key in handValues:
-        count = handValues[key]
-        fraction = count / total_games
-        bar_len = fraction * hist_scale
-        
-        start_x = 0
-        hist_bars[key].length = bar_len
-        hist_bars[key].pos.x = start_x + bar_len / 2
-
-
-init_histogram()
-
-
 
 hist_canvas = canvas(title='Hand Histogram', width=600, height=400, align='right', background=color.black)
 hist_canvas.camera.pos = vector(5, 0, 15)
