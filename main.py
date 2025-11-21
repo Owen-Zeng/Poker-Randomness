@@ -53,8 +53,14 @@ wt = wtext(text = "\nEdge Exclusion: ")
 edge = slider(bind = edgeSlider, min = 0, max = 45, step = 5)
 Ewt = wtext(text = edge.value + "%")
 
+swt = wtext(text = "\nStartingSeed Value: ")
+seedSlider = slider(bind=seedSliderFunc, min=0.05, max=0.95, step=0.01, value=0.1)
+seedWt = wtext(text="0.1")
+
 Swt = wtext(text = "\nStart Simulation   ")
 start = button(bind = toggleSim, text = "Start")
+
+output = wtext(text = "")
 
 def handMenu(evt):
     return selectHand.value
@@ -65,6 +71,9 @@ def iterationsSlider(evt):
 
 def edgeSlider(evt):
     return edge.value
+
+def seedSliderFunc(evt):
+    seedWt.text = str(round(seedSlider.value, 2))
 
 def calculate_pearson(observed_counts, total_games):
     # Expected probabilities
@@ -129,7 +138,7 @@ def toggleSim(evt):
             handValues[key] = 0
             
         num_iterations = int(pow(10, selectIterations.value))
-        current_x = 0.1
+        current_x = seedSlider.value
         
         for i in range(num_iterations):
             current_x = playOneGame(current_x)
@@ -139,7 +148,7 @@ def toggleSim(evt):
                 
         pearson = calculate_pearson(handValues, num_iterations)
 
-        result_text = "\Simulation Complete!\n"
+        result_text = "\nSimulation Complete!\n"
         result_text += "Iterations: " + str(num_iterations) + "\n"
         result_text += "Edge Exclusion: " + str(edge.value) + "%\n\n"
         result_text += "Pearson Correlation: " + str(pearson) + "\n\n"
@@ -148,7 +157,7 @@ def toggleSim(evt):
         for key in handValues:
             result_text += key + ": " + str(handValues[key]) + "\n"
             
-        wt.text = result_text
+        output.text = result_text
         
         running = False
         start.text = "Start"
