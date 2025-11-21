@@ -49,7 +49,7 @@ wt = wtext(text = "\nEdge Exclusion: ")
 edge = slider(bind = edgeSlider, min = 0, max = 45, step = 5)
 Ewt = wtext(text = edge.value + "%")
 
-swt = wtext(text = "\nStartingSeed Value: ")
+swt = wtext(text = "\nStarting Seed Value: ")
 seedSlider = slider(bind=seedSliderFunc, min=0.05, max=0.95, step=0.01, value=0.1)
 seedWt = wtext(text="0.1")
 
@@ -216,10 +216,6 @@ def toggleSim(evt):
             result_text += "Iterations: " + str(num_iterations) + "\n"
             result_text += "Edge Exclusion: " + str(edge.value) + "%\n\n"
             result_text += "Pearson Correlation: " + str(pearson) + "\n\n"
-            result_text += "Hand Counts:\n"
-            
-            for key in handValues:
-                result_text += key + ": " + str(handValues[key]) + "\n"
                 
             output.text = result_text
             
