@@ -170,7 +170,6 @@ def toggleSim(evt):
         start.text = "Start"
 
 if(!running):
-    edge.disabled = True
     selectHand.disabled = True
 
 while True:
