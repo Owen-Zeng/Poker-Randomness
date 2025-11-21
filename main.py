@@ -177,8 +177,6 @@ def toggleSim(evt):
         running = False
         start.text = "Start"
 
-if(!running):
-    selectHand.disabled = True
 
 while True:
     rate(10)
