@@ -282,7 +282,7 @@ def toggleSim(evt):
 
 while True:
     if(animation):
-        rate(1)
+        rate(10)
     else:
         rate(10000)
     iterations = int( pow(10, selectIterations.value))
