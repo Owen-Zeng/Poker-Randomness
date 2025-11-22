@@ -363,30 +363,48 @@ def categorize(current):
 
     if (isStraightFlush(current)):
         handValues["Straight Flush"] = handValues["Straight Flush"]+1
+        if(animation):
+            aText = text(pos = vector(1,-1,0), text = 'Straight  Flush', align = 'center', height = 0.2, color = color.white)
         return 8
     if (firstCommon(current) == 4):
         handValues["Four-Of-A-Kind"] = handValues["Four-Of-A-Kind"]+1
+        if(animation):
+            aText = text(pos = vector(1,-1,0), text = 'Four-Of-A-Kind', align = 'center', height = 0.2, color = color.white)
         return 7
     if (firstCommon(current) == 3 and secondCommon(current) >= 2):
         handValues["Full House"] = handValues["Full House"]+1
+        if(animation):
+            aText = text(pos = vector(1,-1,0), text = 'Full House', align = 'center', height = 0.2, color = color.white)
         return 6
     if (isFlush(current)):
         handValues["Flush"] = handValues["Flush"]+1
+        if(animation):
+            aText = text(pos = vector(1,-1,0), text = 'Flush', align = 'center', height = 0.2, color = color.white)
         return 5
     if (isStraight(current)):
         handValues["Straight"] = handValues["Straight"]+1
+        if(animation):
+            aText = text(pos = vector(1,-1,0), text = 'Straight', align = 'center', height = 0.2, color = color.white)
         return 4
     if (firstCommon(current) == 3):
         handValues["Three Of A Kind"] = handValues["Three Of A Kind"]+1
+        if(animation):
+            aText = text(pos = vector(1,-1,0), text = 'Three Of A Kind', align = 'center', height = 0.2, color = color.white)
         return 3
     if (firstCommon(current) == 2 and secondCommon(current) == 2):
+        if(animation):
+            aText = text(pos = vector(1,-1,0), text = 'Two Pair', align = 'center', height = 0.2, color = color.white)
         handValues["Two Pair"] = handValues["Two Pair"]+1
         return 2
     if (firstCommon(current) == 2):
         handValues["Pair"] = handValues["Pair"]+1
+        if(animation):
+            aText = text(pos = vector(1,-1,0), text = 'Pair', align = 'center', height = 0.2, color = color.white)
         return 1
     else:
         handValues["High Card"] = handValues["High Card"]+1
+        if(animation):
+            aText = text(pos = vector(1,-1,0), text = 'High Card', align = 'center', height = 0.2, color = color.white)
         return 0
 
 def logistic(r, currX):
