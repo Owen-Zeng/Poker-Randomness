@@ -36,11 +36,15 @@ def convert(num):
 # USER INPUT===========================================================
 iterations = 0
 edgeExclusion = 0
+animation = False
 running = False
+
+buttonText = wtext(text = "\n Toggle Animation: ")
+animationStatus = wtext(text = "Off ")
+animationToggle = button(bind = toggleAnimation, text = "Toggle")
 
 
 wt = wtext(text = "\nSelect Iterations: ")
-
 selectIterations = slider(bind= iterationsSlider, min = 0, max =6, step = 1, disabled = True)
 Iwt = wtext(text = "1")
 
@@ -151,6 +155,17 @@ def edgeSlider(evt):
 def seedSliderFunc(evt):
     seedWt.text = str(round(seedSlider.value, 2))
 
+def toggleAnimation(evt):
+    global animationStatus
+    global animation
+
+    animation = not animation
+
+    if(animation):
+        animationStatus.text = "On "
+    else:
+        animationStatus.text = "Off "
+
 def calculate_pearson(observed_counts, total_games):
     probs = [
         0.174,   # High Card
@@ -200,12 +215,15 @@ def calculate_pearson(observed_counts, total_games):
 
 def toggleSim(evt):
     global running
+    global animation
     if not running:
         running = True
         start.text = "Running..."
         start.disabled = True
         edge.disabled = True
         selectIterations.disabled = True
+
+
 
         for key in handValues:
             handValues[key] = 0
@@ -216,10 +234,30 @@ def toggleSim(evt):
         current_x = seedSlider.value
         
         for i in range(num_iterations):
-            current_x = playOneGame(current_x)
+            if(animation):
+                rate(10)
+            else:
+                rate(10000)
+
+
+            if(animation):
+                for obj in scene.objects:
+                    obj.visible = False
+                    del obj
+            if not (i == num_iterations-1):
+                current_x = playOneGame(current_x)
+            else:
+                animation = True
+                for obj in scene.objects:
+                    obj.visible = False
+                    del obj
+                current_x = playOneGame(current_x)
+                animation = False
+                animationStatus.text = "Off"
                 
-            if i % 100 == 0:
-                rate(1000)
+
+                
+
                     
             pearson = calculate_pearson(handValues, num_iterations)
             updatePearson(edge.value, pearson)
@@ -243,7 +281,10 @@ def toggleSim(evt):
         start.text = "Start"
 
 while True:
-    rate(10)
+    if(animation):
+        rate(1)
+    else:
+        rate(10000)
     iterations = int( pow(10, selectIterations.value))
     Iwt.text = "" + iterations
 
@@ -379,19 +420,30 @@ def deal_hand(r, current_x, edgeExclusion):
         
         card = deck.pop(index)
         hand.append(card)
-        suit =   0  
-        if(card % 4 == 0):
-            suit = "diamond"
-        if(card % 4 == 1):
-            suit = "clubs"
-        if(card % 4 == 2):
-            suit = "hearts"
-        if(card % 4 == 3):
-            suit = "spades"
-            
-        rank = 1 + card//4
-        drawSuit(card_x, 0, suit, rank)
-        card_x -= 1
+        if(animation):
+            drawBackgroundCards(-3,0,0)
+            drawBackgroundCards(-2,0,0)
+            drawBackgroundCards(-1,0,0)
+            drawBackgroundCards(0,0,0)
+            drawBackgroundCards(1,0,0)
+            drawBackgroundCards(2,0,0)
+            drawBackgroundCards(3,0,0)
+            selfHand(-2.5,.5,0)
+            dealt(1,.5,0)
+            separate(-1.5,0,0)
+            suit =   0  
+            if(card % 4 == 0):
+                suit = "diamond"
+            if(card % 4 == 1):
+                suit = "clubs"
+            if(card % 4 == 2):
+                suit = "hearts"
+            if(card % 4 == 3):
+                suit = "spades"
+                
+            rank = 1 + card//4
+            drawSuit(card_x, 0, suit, rank)
+            card_x -= 1
 
 
 
